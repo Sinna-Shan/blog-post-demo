@@ -28,7 +28,6 @@ const handleSubmit = async () => {
       router.push('/posts')
       toast.success('Login successful!')
     } else {
-      const data = await res.json()
       toast.error(data.message)
     }
 

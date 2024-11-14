@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
     const { email, password } = req.body;
-    console.log(req.body);
 
   try {
     const userRef = doc(db, "users", email);
@@ -32,7 +31,6 @@ exports.register = async (req, res) => {
       }
     );
 
-      console.log(token);
     res.status(201).json({ message: "User registered successfully", token });
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -49,7 +49,6 @@ exports.getAllPosts = async (req, res) => {
       lastDoc = doc;
     });
 
-    console.log(posts);
 
     res.status(200).json({
       posts,
