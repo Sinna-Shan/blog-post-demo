@@ -48,18 +48,18 @@ const handleDelete = async () => {
 </script>
 
 <template>
-  <div class="bg-white rounded flex flex-col items-center">
+  <div class="rounded flex flex-col px-4 text-stone-300">
     <div class="flex mt-6 gap-2">
       <img
         v-if="post.imageUrl"
         :src="post.imageUrl"
         :alt="post.title"
-        class="w-32 h-32 bg-red-300 rounded-full object-cover"
+        class="w-32 h-32 bg-red-300 rounded-full object-cover shadow-md mb-6"
       />
     </div>
-    <h1 class="text-3xl mb-1 text-gray-800">{{ post.title }}</h1>
+    <h1 class="text-3xl mb-1 text-stone-100 font-mono font-bold">{{ post.title }}</h1>
     <h3 class="text-xl mb-3">{{ post.subtitle }}</h3>
-    <p class="p-2 rounded text-sm">
+    <p class="rounded text-sm">
       {{ truncatedDescription }}
       <span v-if="truncatedDescription.length > 90">
         <button @click="toggleDescription" v-if="!showFullDescription" class="text-blue-700">
@@ -70,13 +70,13 @@ const handleDelete = async () => {
     </p>
 
     <div class="flex gap-2 my-5">
-      <button class="bg-red-500 text-white w-32 h-10 rounded-full" @click="handleDelete">
-        delete
+      <button class="bg-red-500 text-white w-12 p-3 rounded-full" @click="handleDelete">
+        <i class="pi pi-trash text-xl"></i>
       </button>
       <RouterLink
-        class="bg-slate-400 text-white w-32 h-10 rounded-full flex items-center justify-center"
+        class="bg-slate-400 text-white w-12 p-3 rounded-full flex items-center justify-center"
         :to="`posts/${props.post.id}`"
-        >view</RouterLink
+        ><i class="pi pi-pen-to-square text-xl"></i></RouterLink
       >
     </div>
   </div>

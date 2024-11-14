@@ -76,39 +76,67 @@ const handleLogout = () => {
     <RingLoader />
   </div>
 
-  <div v-else class="bg-slate-300 min-h-screen flex flex-col items-center">
+  <div v-else class="bg-stone-800 min-h-screen flex flex-col items-center">
     <!-- Top bar for creating new posts and logging out -->
-    <div class="bg-blue-900 w-full flex gap-2 justify-end pr-2">
+    <div class="bg-stone-900 w-full flex gap-2 justify-end py-2 pr-2 shadow-md">
       <RouterLink
         to="/posts/create"
-        class="w-48 bg-green-500 my-2 flex items-center justify-center p-2 rounded text-white text-lg"
+        class=" bg-green-500 my-2 flex items-center gap-2 justify-center px-4 py-2 rounded-full text-white text-lg"
       >
-        Create a new post
+       <i class="pi pi-plus-circle text-lg"></i> New post
       </RouterLink>
       <button
-        class="bg-red-500 my-2 flex items-center justify-center p-2 rounded text-white text-lg"
+        class="bg-red-500 my-2 flex items-center justify-center px-4 rounded-full text-white text-lg"
         @click="handleLogout"
       >
-        Log out
+        <i class="pi pi-sign-out"></i>
       </button>
     </div>
 
     <!-- Sorting and filtering controls -->
-    <div class="w-full flex justify-between p-4">
-      <div>
-        <label for="sort">Sort by:</label>
-        <select id="sort" v-model="state.sortBy" @change="handleSortChange(state.sortBy)">
+    <div class="w-full flex p-4 justify-between">
+
+      <div class="flex gap-2 items-center">
+        <label for="sort" class="text-white">Sort by:</label>
+        <select
+          id="sort"
+          v-model="state.sortBy"
+          @change="handleSortChange(state.sortBy)"
+          class="rounded-full p-3 bg-stone-500"
+        >
           <option value="title">Title</option>
           <option value="subtitle">Sub tittle</option>
           <!-- Add other sorting fields as needed -->
         </select>
 
-        <select v-model="state.sortDirection" @change="fetchPosts">
+        <select v-model="state.sortDirection" @change="fetchPosts" class="rounded-full p-3 bg-stone-500">
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
       </div>
+
+      <!-- Pagination controls -->
+      <div class="flex gap-2 justify-center items-center my-4">
+        <button
+          :disabled="state.currentPage === 1"
+          @click="handlePageChange(state.currentPage - 1)"
+          class="text-white"
+        >
+          <i class="pi pi-arrow-circle-left text-2xl"></i>
+        </button>
+        <span class="text-white">Page {{ state.currentPage }} of {{ state.totalPages }}</span>
+        <button
+          :disabled="state.currentPage === state.totalPages"
+          @click="handlePageChange(state.currentPage + 1)"
+          class="text-white"
+        >
+          <i class="pi pi-arrow-circle-right text-2xl"></i>
+        </button>
+      </div>
     </div>
+
+    
+      
 
     <!-- Display posts -->
     <div class="w-full" v-if="state.posts.length > 0">
@@ -116,31 +144,12 @@ const handleLogout = () => {
         <li
           v-for="post in state.posts"
           :key="post.id"
-          class="bg-white rounded flex flex-col items-center"
+          class="bg-zinc-800 rounded flex flex-col items-center border border-neutral-500 shadow-lg"
         >
           <Post :post="post" :fetch="fetchPosts" />
         </li>
       </ul>
     </div>
     <div v-else>Create a new post by clicking the button above.</div>
-
-    <!-- Pagination controls -->
-    <div class="flex gap-2 justify-center my-4">
-      <button
-        :disabled="state.currentPage === 1"
-        @click="handlePageChange(state.currentPage - 1)"
-        class="bg-gray-500 px-4 py-2 rounded text-white"
-      >
-        Previous
-      </button>
-      <span>Page {{ state.currentPage }} of {{ state.totalPages }}</span>
-      <button
-        :disabled="state.currentPage === state.totalPages"
-        @click="handlePageChange(state.currentPage + 1)"
-        class="bg-gray-500 px-4 py-2 rounded text-white"
-      >
-        Next
-      </button>
-    </div>
   </div>
 </template>

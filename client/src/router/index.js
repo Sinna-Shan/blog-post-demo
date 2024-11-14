@@ -5,12 +5,16 @@ import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
 import CreatePostView from '@/views/CreatePostView.vue'
-import { useToast } from 'vue-toastification';
+import { useToast } from 'vue-toastification'
 const toast = useToast()
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      redirect: '/login',
+    },
     {
       path: '/posts',
       name: 'home',
@@ -49,7 +53,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('token')
 
-
   if (to.meta.requiresAuth && !isAuthenticated) {
     toast.error('You need to be logged in to access this page')
     next('/login')
@@ -57,7 +60,5 @@ router.beforeEach((to, from, next) => {
     next()
   }
 })
-
-
 
 export default router
