@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref} from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import RingLoader from 'vue-spinner/src/RingLoader.vue'
 import { useToast } from 'vue-toastification'
@@ -113,13 +113,27 @@ const handleSubmit = async () => {
     isLoading.value = false
   }
 }
+
+
+
 </script>
 <template>
-  <div v-if="isLoading" class="h-screen w-full flex items-center justify-center bg-gray-700 ">
+  <div v-if="isLoading" class="h-screen w-full flex items-center justify-center bg-gray-700">
     <RingLoader />
   </div>
-  <div v-else class="bg-gray-100 min-h-screen flex items-center justify-center flex-col bg-stone-800 text-stone-500">
-    <h1 class="text-3xl mb-6">{{postId === '' ? 'Create a new post' : 'Update post'}}</h1>
+  <div
+    v-else
+    class="relative bg-gray-100 min-h-screen flex items-center justify-center flex-col bg-stone-800 text-stone-500"
+  >
+    <h1 class="text-3xl mb-6">{{ postId === '' ? 'Create a new post' : 'Update post' }}</h1>
+    <div class="w-full absolute top-2 left-20">
+      <RouterLink to="/posts"
+        class="rounded-full w-12 h-12 bg-gray-700 gap-2 text-white text-xl flex items-center justify-center self-srart"
+      >
+        <i class="pi pi-arrow-left text-lg"></i>
+      </RouterLink>
+    </div>
+
     <form @submit.prevent="handleSubmit" class="flex justify-center flex-col gap-3">
       <label for="title">title</label>
       <input
@@ -156,12 +170,10 @@ const handleSubmit = async () => {
       <input type="file" name="images" id="images" @change="handleImageChange" />
 
       <div class="flex gap-2 items-center self-end">
-        <RouterLink
-          to="/posts"
-          class="rounded w-32 h-12 bg-gray-700 gap-2 text-white text-xl flex items-center justify-center"
-          ><i class="pi pi-arrow-left text-lg"></i> back</RouterLink
+        <button
+          class="bg-green-600 text-white rounded w-32 h-12 text-lg flex items-center justify-center"
+          :disabled="isLoading"
         >
-        <button class="bg-green-600 text-white rounded w-32 h-12 text-lg flex items-center justify-center" :disabled="isLoading">
           <i class="pi pi-check-circle text-2xl"></i>
         </button>
       </div>

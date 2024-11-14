@@ -57,8 +57,8 @@ const handleDelete = async () => {
         class="w-32 h-32 bg-red-300 rounded-full object-cover shadow-md mb-6"
       />
     </div>
-    <h1 class="text-3xl mb-1 text-stone-100 font-mono font-bold">{{ post.title }}</h1>
-    <h3 class="text-xl mb-3">{{ post.subtitle }}</h3>
+    <h1 class="text-3xl mb-1 text-stone-100 font-mono font-bold uppercase">{{ post.title }}</h1>
+    <h3 class="text-xl mb-3 font-light text-stone-600">{{ post.subtitle }}</h3>
     <p class="rounded text-sm">
       {{ truncatedDescription }}
       <span v-if="truncatedDescription.length > 90">

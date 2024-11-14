@@ -17,21 +17,15 @@ exports.getAllPosts = async (req, res) => {
   try {
     const pageSize = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
-    const lastVisibleId = req.query.lastVisibleId || null;
-
-    const sortBy = req.query.sortBy || "title";
-    const sortDirection = req.query.sortDirection === "asc" ? "asc" : "desc";
+    let lastVisibleId = req.query.lastVisibleId || null;
 
     let postsQuery = collection(db, "posts");
-
-    postsQuery = query(postsQuery, orderBy(sortBy, sortDirection));
 
     const allPosts = await getDocs(postsQuery);
     const totalPosts = allPosts.size;
 
     let paginatedQuery = query(postsQuery, limit(pageSize));
 
-    console.log(lastVisibleId);
     if (lastVisibleId) {
       const lastVisibleDocRef = doc(db, "posts", lastVisibleId);
       const lastVisibleDoc = await getDoc(lastVisibleDocRef);
@@ -55,7 +49,7 @@ exports.getAllPosts = async (req, res) => {
       lastDoc = doc;
     });
 
-console.log(posts);
+    console.log(posts);
 
     res.status(200).json({
       posts,
