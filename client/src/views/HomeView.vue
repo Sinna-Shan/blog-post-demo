@@ -7,20 +7,20 @@ import RingLoader from 'vue-spinner/src/RingLoader.vue'
 const state = reactive({
   isLoading: true,
   posts: [],
-  sortBy: 'title', // Default sort field
-  sortDirection: 'desc', // Default sort direction
-  limit: 3, // Number of posts per page
-  currentPage: 1, // Current page
-  totalPages: 1, // Total number of pages
-  lastVisibleId: null, // Last document ID for pagination
+  sortBy: 'title',
+  sortDirection: 'desc',
+  limit: 3,
+  currentPage: 0,
+  totalPages: 1,
+  lastVisibleId: null,
 })
 
 const router = useRouter()
 
 const fetchPosts = async () => {
-  state.isLoading = true;
+  state.isLoading = true
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
     const res = await fetch(
       `http://localhost:8000/api/v1/posts?limit=${state.limit}&page=${state.currentPage}&sortBy=${state.sortBy}&sortDirection=${state.sortDirection}&lastVisibleId=${state.lastVisibleId}`,
       {
@@ -28,44 +28,47 @@ const fetchPosts = async () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
-    const data = await res.json();
-    console.log(data.posts);
-    state.posts = data.posts;
-    state.totalPages = data.totalPages;
-    state.currentPage = data.currentPage;
-    state.lastVisibleId = data.lastVisibleId; // Update the last document ID for pagination
+      },
+    )
+    const data = await res.json()
+    console.log(data.posts)
+    state.posts = data.posts
+    state.totalPages = data.totalPages
+    state.currentPage = data.currentPage
+    state.lastVisibleId = data.lastVisibleId
   } catch (e) {
-    console.log(e.message);
-    router.push('/login');
+    console.log(e.message)
+    router.push('/login')
   } finally {
-    state.isLoading = false;
+    state.isLoading = false
   }
-};
+}
 
-onMounted(fetchPosts);
+onMounted(fetchPosts)
 
-// Function to handle sorting
 const handleSortChange = (field) => {
-  state.sortBy = field;
-  state.currentPage = 1; // Reset to first page when sorting changes
-  state.lastVisibleId = null; // Reset the lastVisibleId when sorting changes
-  fetchPosts();
-};
+  state.sortBy = field
+  state.currentPage = 1
+  state.lastVisibleId = null
+  fetchPosts()
+}
 
-// Function to handle pagination
 const handlePageChange = (page) => {
-  console.log('page : ',page);
-  console.log('state page',state.currentPage);
-  state.currentPage = page;
+  console.log('page : ', page)
+  console.log('current page', state.currentPage)
+  state.currentPage = page
   if (page === 1) {
-    state.lastVisibleId = null; // Reset the lastVisibleId when going back to the first page
+    state.lastVisibleId = null
   }
-  fetchPosts();
-};
+  fetchPosts()
+}
 
-
+const handleLogout = () => {
+  if (window.confirm('Are you sure you want to log out ?')) {
+    localStorage.removeItem('token')
+    router.push('/login')
+  }
+}
 </script>
 
 <template>
@@ -82,12 +85,16 @@ const handlePageChange = (page) => {
       >
         Create a new post
       </RouterLink>
-      <button class="bg-red-500 my-2 flex items-center justify-center p-2 rounded text-white text-lg">Log out</button>
+      <button
+        class="bg-red-500 my-2 flex items-center justify-center p-2 rounded text-white text-lg"
+        @click="handleLogout"
+      >
+        Log out
+      </button>
     </div>
 
     <!-- Sorting and filtering controls -->
     <div class="w-full flex justify-between p-4">
-
       <div>
         <label for="sort">Sort by:</label>
         <select id="sort" v-model="state.sortBy" @change="handleSortChange(state.sortBy)">
@@ -106,7 +113,11 @@ const handlePageChange = (page) => {
     <!-- Display posts -->
     <div class="w-full" v-if="state.posts.length > 0">
       <ul class="grid grid-cols-3 gap-3 p-3">
-        <li v-for="post in state.posts" :key="post.id" class="bg-white rounded flex flex-col items-center">
+        <li
+          v-for="post in state.posts"
+          :key="post.id"
+          class="bg-white rounded flex flex-col items-center"
+        >
           <Post :post="post" :fetch="fetchPosts" />
         </li>
       </ul>
@@ -133,39 +144,3 @@ const handlePageChange = (page) => {
     </div>
   </div>
 </template>
-
-
-
-<!-- <template>
-  <div v-if="state.isLoading" class="h-screen w-full flex items-center justify-center bg-gray-700">
-    <RingLoader />
-  </div>
-  <div v-else class="bg-slate-300 min-h-screen flex flex-col items-center">
-    <div class="bg-blue-900 w-full flex gap-2 justify-end pr-2">
-      <RouterLink
-        to="/posts/create"
-        class="w-48 bg-green-500 my-2 flex items-center justify-center p-2 rounded text-white text-lg"
-      >
-        create a new post</RouterLink
-      >
-      <button
-        class="bg-red-500 my-2 flex items-center justify-center p-2 rounded text-white text-lg"
-      >
-        log out
-      </button>
-    </div>
-    <div class="w-full" v-if="state.posts.length > 0">
-      <ul class="grid grid-cols-3 gap-3 p-3">
-        <li
-          v-for="post in state.posts"
-          :key="post.id"
-          class="bg-white rounded flex flex-col items-center"
-        >
-          <Post :post="post" :fetch="fetchPosts" />
-        </li>
-      </ul>
-    </div>
-    <div v-else>Create a new post by clicking the button above.</div>
-  </div>
-</template> -->
-

@@ -9,7 +9,7 @@ const {
   query,
   orderBy,
   startAfter,
-  limit
+  limit,
 } = require("firebase/firestore");
 const { db } = require("../config/firebase");
 
@@ -31,6 +31,7 @@ exports.getAllPosts = async (req, res) => {
 
     let paginatedQuery = query(postsQuery, limit(pageSize));
 
+    console.log(lastVisibleId);
     if (lastVisibleId) {
       const lastVisibleDocRef = doc(db, "posts", lastVisibleId);
       const lastVisibleDoc = await getDoc(lastVisibleDocRef);
@@ -53,6 +54,8 @@ exports.getAllPosts = async (req, res) => {
       posts.push({ id: doc.id, ...doc.data() });
       lastDoc = doc;
     });
+
+console.log(posts);
 
     res.status(200).json({
       posts,
