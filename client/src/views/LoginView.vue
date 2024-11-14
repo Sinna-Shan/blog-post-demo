@@ -43,35 +43,35 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <main class="w-screen h-screen bg-sky-500 flex items-center justify-center">
-    <div class="bg-white rounded-md p-6 flex flex-col gap-y-2">
-      <h1 class="text-3xl mb-6 text-center">Welcome to writer</h1>
+  <main class="w-screen h-screen bg-stone-900 flex items-center justify-center">
+    <div class="bg-neutral-800 border border-neutral-700 w-[30%] text-stone-800 rounded-md p-6 flex flex-col gap-y-2">
+      <h1 class="text-3xl mb-6 text-neutral-400 text-center font-mono uppercase">Welcome</h1>
       <form @submit.prevent="handleSubmit" class="flex flex-col gap-2">
-        <label for="email" class="text-base text-slate-500"> email</label>
+        <label for="email" class="text-base text-neutral-400"> email</label>
         <input
           type="email"
           v-model="email"
           name="email"
           id="email"
-          class="bg-gray-100 rounded-md h-10 pl-2"
+          class="bg-neutral-500 text-neutral-300 rounded-md h-10 pl-2"
         />
-        <p class="text-red-600 text-sm" v-if="emailNotEmpty === false">*email is required.</p>
+        <p class="text-yellow-700" v-if="emailNotEmpty === false">*email is required.</p>
 
-        <label for="password" class="text-base text-slate-500"> password</label>
+        <label for="password" class="text-base text-neutral-400"> password</label>
         <input
           type="password"
           v-model="password"
           name="password"
           id="password"
-          class="bg-gray-100 rounded-md h-10 pl-2"
+          class="bg-neutral-500 text-neutral-300 rounded-md h-10 pl-2"
         />
-        <p class="text-red-600 text-sm" v-if="passwordNotEmpty === false">*password is required.</p>
+        <p class="text-yellow-700" v-if="passwordNotEmpty === false">*password is required.</p>
 
-        <button class="bg-green-400 text-white h-10 rounded-md mt-5" type="submit">Login</button>
+        <button class="bg-green-700 text-white h-10 rounded-md mt-5" type="submit">Login</button>
       </form>
-      <p class="text-gray-800 text-sm mt-2">don't have an account?</p>
+      <p class="text-neutral-400 text-sm mt-2">don't have an account?</p>
 
-      <RouterLink class="bg-blue-400 text-white h-10 rounded-md flex items-center justify-center" to="/signup">Sign up</RouterLink>
+      <RouterLink class="bg-transparent border-2 border-neutral-400 text-white h-10 rounded-md flex items-center justify-center" to="/signup">Sign up</RouterLink>
     </div>
   </main>
 </template>
