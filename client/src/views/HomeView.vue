@@ -77,20 +77,20 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <div v-if="state.isLoading" class="h-screen w-full flex items-center justify-center bg-gray-700">
+  <div v-if="state.isLoading" class="h-screen w-full flex items-center justify-center bg-neutral-900">
     <RingLoader />
   </div>
 
-  <div v-else class="bg-stone-800 min-h-screen flex flex-col items-center">
-    <div class="bg-stone-900 w-full flex gap-2 justify-end py-2 pr-2 shadow-md">
+  <div v-else class="bg-neutral-900 min-h-screen flex flex-col items-center">
+    <div class="bg-neutral-900 w-full flex gap-2 justify-end py-2 pr-2 shadow-lg">
       <RouterLink
         to="/posts/create"
-        class="bg-green-500 my-2 flex items-center gap-2 justify-center px-4 py-2 rounded-full text-white text-lg"
+        class="bg-green-800 my-2 flex items-center gap-2 justify-center px-4 py-2 rounded-full text-white text-lg"
       >
         <i class="pi pi-plus-circle text-lg"></i> New post
       </RouterLink>
       <button
-        class="bg-red-500 my-2 flex items-center justify-center px-4 rounded-full text-white text-lg"
+        class="bg-red-800 my-2 flex items-center justify-center px-4 rounded-full text-white text-lg"
         @click="handleLogout"
       >
         <i class="pi pi-sign-out"></i>
@@ -99,11 +99,11 @@ const handleLogout = () => {
 
     <div class="w-full flex p-4 justify-between">
       <div class="flex gap-2 items-center">
-        <label for="sort" class="text-white">Sort by:</label>
+        <label for="sort" class="text-neutral-400">Sort by:</label>
         <select
           id="sort"
           @change="handleSortChange"
-          class="rounded-full p-3 bg-stone-500"
+          class="rounded-full p-3 bg-neutral-600 text-neutral-300"
         >
           <option value="title">Title</option>
           <option value="subtitle">Sub tittle</option>
@@ -111,7 +111,7 @@ const handleLogout = () => {
 
         <select
           @change="handleSortDirection"
-          class="rounded-full p-3 bg-stone-500"
+          class="rounded-full p-3 bg-neutral-600 text-neutral-300"
         >
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
@@ -119,14 +119,14 @@ const handleLogout = () => {
       </div>
 
       <div class="flex gap-2 justify-center items-center my-4">
-        <button :disabled="state.currentPage === 1" @click="handlePageChange(1)" class="text-white">
+        <button :disabled="state.currentPage === 1" @click="handlePageChange(1)" class="text-neutral-300">
           <i class="pi pi-arrow-circle-left text-2xl"></i>
         </button>
-        <span class="text-white">Page {{ state.currentPage }} of {{ state.totalPages }}</span>
+        <span class="text-neutral-300">Page {{ state.currentPage }} of {{ state.totalPages }}</span>
         <button
           :disabled="state.currentPage === state.totalPages"
           @click="handlePageChange(state.currentPage + 1)"
-          class="text-white"
+          class="text-neutral-300"
         >
           <i class="pi pi-arrow-circle-right text-2xl"></i>
         </button>
