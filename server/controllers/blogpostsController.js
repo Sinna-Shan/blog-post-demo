@@ -6,18 +6,65 @@ const {
   deleteDoc,
   getDocs,
   doc,
+  query,
+  orderBy,
+  startAfter,
+  limit
 } = require("firebase/firestore");
 const { db } = require("../config/firebase");
 
 exports.getAllPosts = async (req, res) => {
-  const querySnapshot = await getDocs(collection(db, "posts"));
-  const data = [];
+  try {
+    const pageSize = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const lastVisibleId = req.query.lastVisibleId || null;
 
-  querySnapshot.forEach((doc) => {
-    data.push({ id: doc.id, ...doc.data() });
-  });
+    const sortBy = req.query.sortBy || "title";
+    const sortDirection = req.query.sortDirection === "asc" ? "asc" : "desc";
 
-  res.status(200).json(data);
+    let postsQuery = collection(db, "posts");
+
+    postsQuery = query(postsQuery, orderBy(sortBy, sortDirection));
+
+    const allPosts = await getDocs(postsQuery);
+    const totalPosts = allPosts.size;
+
+    let paginatedQuery = query(postsQuery, limit(pageSize));
+
+    if (lastVisibleId) {
+      const lastVisibleDocRef = doc(db, "posts", lastVisibleId);
+      const lastVisibleDoc = await getDoc(lastVisibleDocRef);
+
+      if (lastVisibleDoc.exists()) {
+        paginatedQuery = query(
+          postsQuery,
+          startAfter(lastVisibleDoc),
+          limit(pageSize)
+        );
+      }
+    }
+
+    const paginatedDocs = await getDocs(paginatedQuery);
+
+    const posts = [];
+    let lastDoc = null;
+
+    paginatedDocs.forEach((doc) => {
+      posts.push({ id: doc.id, ...doc.data() });
+      lastDoc = doc;
+    });
+
+    res.status(200).json({
+      posts,
+      lastVisibleId: lastDoc ? lastDoc.id : null,
+      total: totalPosts,
+      totalPages: Math.ceil(totalPosts / pageSize),
+      currentPage: page,
+    });
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    res.status(500).json({ error: "Failed to fetch posts" });
+  }
 };
 
 exports.createPost = async (req, res) => {
