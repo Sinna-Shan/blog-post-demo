@@ -4,7 +4,7 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import SignupView from '@/views/SignupView.vue'
 import NotFoundView from '@/views/NotFoundView.vue'
-import CreatePostView from '@/views/CreatePostView.vue'
+import PostFormView from '@/views/PostFormView.vue'
 import { useToast } from 'vue-toastification'
 const toast = useToast()
 
@@ -24,12 +24,12 @@ const router = createRouter({
     {
       path: '/posts/:id',
       name: 'update-post',
-      component: CreatePostView,
+      component: PostFormView,
     },
     {
       path: '/posts/create',
       name: 'create-post',
-      component: CreatePostView,
+      component: PostFormView,
     },
     {
       path: '/login',
